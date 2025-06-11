@@ -1,3 +1,10 @@
+/*
+* Author: Chia Jia Cong Justin
+* Date: 11 June 2025
+* Description: This script handles the poison damage to the player.
+*/
+
+
 using UnityEngine;
 
 public class PoisonDamage : MonoBehaviour
