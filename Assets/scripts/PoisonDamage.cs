@@ -2,24 +2,35 @@ using UnityEngine;
 
 public class PoisonDamage : MonoBehaviour
 {
-    public int poisonDamage = 10;
-    public float damageInterval = 1f;
-    private float damageTimer;
+    public int poisonDamagePerSecond = 10;
+    private bool playerInPoison = false;
+    private float poisonTimer = 0f;
+    private PlayerHealth playerHealth;
 
-    private void OnTriggerStay(Collider other)
+    void Update()
+    {
+        if (playerInPoison && playerHealth != null)
+        {
+            poisonTimer += Time.deltaTime;
+            if (poisonTimer >= 1f)
+            {
+                playerHealth.TakeDamage(poisonDamagePerSecond);
+                poisonTimer = 0f;
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            damageTimer += Time.deltaTime;
-            if (damageTimer >= damageInterval)
+            playerHealth = other.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
             {
-                PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(poisonDamage);
-                    damageTimer = 0f;
-                }
+                playerHealth.TakeDamage(poisonDamagePerSecond); // Instant damage
             }
+            playerInPoison = true;
+            poisonTimer = 0f;
         }
     }
 
@@ -27,7 +38,8 @@ public class PoisonDamage : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            damageTimer = 0f; // Reset the timer when the player leaves the poison
+            playerInPoison = false;
+            playerHealth = null;
         }
     }
 }
