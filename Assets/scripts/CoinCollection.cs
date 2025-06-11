@@ -4,6 +4,7 @@ using TMPro;
 public class CoinCollection : MonoBehaviour
 {
     private int Coin = 0;
+    public int coinValue = 10;
 
     public TextMeshProUGUI coinText;
 
@@ -11,8 +12,8 @@ public class CoinCollection : MonoBehaviour
     {
         if (other.transform.tag == "Coin")
         {
-            Coin++;
-            coinText.text = "Coin: " + Coin.ToString();
+            Coin += coinValue;
+            coinText.text = "Score: " + Coin.ToString();
             // Log the number of coins collected
             Debug.Log(Coin);
             Destroy(other.gameObject);
