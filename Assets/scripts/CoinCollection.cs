@@ -1,3 +1,11 @@
+/*
+* Author: Chia Jia Cong Justin
+* Date: 11 June 2025
+* Description: This script handles the collection of coins in the game.
+* When the player collides with a coin, it increases the score and updates the UI.
+*/
+
+
 using UnityEngine;
 using TMPro;
 
