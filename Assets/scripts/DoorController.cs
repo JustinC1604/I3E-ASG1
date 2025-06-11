@@ -1,3 +1,10 @@
+/*
+* Author: Chia Jia Cong Justin
+* Date: 11/06/2025
+* Description: This script controls the door's opening and closing animation
+*/
+
+
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
