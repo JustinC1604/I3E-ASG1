@@ -85,8 +85,6 @@ public class PlayerHealth : MonoBehaviour
             gameOverPanel.SetActive(true);
         }
 
-        // Optionally disable movement here, if needed
-
         Invoke("RestartLevel", restartDelay);
     }
 
