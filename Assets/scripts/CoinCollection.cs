@@ -38,8 +38,10 @@ public class CoinCollection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "Coin")
+        if (other.CompareTag("Coin"))
         {
+            other.GetComponent<Collider>().enabled = false;
+
             Coin += coinValue;
             coinText.text = "Score: " + Coin.ToString();
             Debug.Log(Coin);

@@ -15,6 +15,7 @@ public class KeyInteraction : MonoBehaviour
     public Transform player;
     public TextMeshProUGUI interactionPrompt;
     public Image keyIconUI;
+    public LockedDoorInteraction lockedDoor;
 
     private bool isInRange = false;
     private bool isCollected = false;
@@ -38,10 +39,17 @@ public class KeyInteraction : MonoBehaviour
     {
         isCollected = true;
         interactionPrompt.gameObject.SetActive(false);
+
         if (keyIconUI != null)
         {
-            keyIconUI.enabled = true;
+            keyIconUI.gameObject.SetActive(true);
         }
-        gameObject.SetActive(false); // Hides the key
+
+        if (lockedDoor != null)
+        {
+            lockedDoor.GivePlayerKey(); 
+        }
+
+        gameObject.SetActive(false); 
     }
 }
