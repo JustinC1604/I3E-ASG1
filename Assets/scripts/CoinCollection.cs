@@ -8,20 +8,26 @@
 
 using UnityEngine;
 using TMPro;
-using System.Collections; 
+using System.Collections;
 
 public class CoinCollection : MonoBehaviour
 {
-    private int Coin = 0;
+    public int Coin { get; private set; } = 0;
     public int coinValue = 10;
     public TextMeshProUGUI coinText;
 
-    public GameObject keyObject; 
+    public GameObject keyObject;
     public TextMeshProUGUI messageText;
     public float messageDuration = 3f;
     private bool keySpawned = false;
 
     public int scoreToUnlockKey = 50;
+
+    public AudioClip coinCollectSound;
+    [Range(0f, 1f)]
+    public float volume = 1f;
+
+    private AudioSource coinAudioSource;
 
     private void Start()
     {
@@ -32,8 +38,14 @@ public class CoinCollection : MonoBehaviour
 
         if (messageText != null)
         {
-            messageText.gameObject.SetActive(false); 
+            messageText.gameObject.SetActive(false);
         }
+
+        // Forcefully add and configure a dedicated 2D AudioSource for coin sounds
+        coinAudioSource = gameObject.AddComponent<AudioSource>();
+        coinAudioSource.playOnAwake = false;
+        coinAudioSource.spatialBlend = 0f; // Force 2D
+        coinAudioSource.volume = volume;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,14 +54,16 @@ public class CoinCollection : MonoBehaviour
         {
             other.GetComponent<Collider>().enabled = false;
 
+            PlayCoinSound();
+
             Coin += coinValue;
-            coinText.text = "Score: " + Coin.ToString();
+            UpdateScoreUI();
             Debug.Log(Coin);
             Destroy(other.gameObject);
 
             if (Coin >= scoreToUnlockKey && keyObject != null && !keySpawned)
             {
-                keyObject.SetActive(true); 
+                keyObject.SetActive(true);
                 keySpawned = true;
 
                 if (messageText != null)
@@ -60,6 +74,14 @@ public class CoinCollection : MonoBehaviour
         }
     }
 
+    private void UpdateScoreUI()
+    {
+        if (coinText != null)
+        {
+            coinText.text = "Score: " + Coin.ToString();
+        }
+    }
+
     private IEnumerator ShowMessage(string message, float duration)
     {
         messageText.text = message;
@@ -67,5 +89,24 @@ public class CoinCollection : MonoBehaviour
         yield return new WaitForSeconds(duration);
         messageText.text = "";
         messageText.gameObject.SetActive(false);
+    }
+
+    public void AddScore(int value)
+    {
+        Coin += value;
+        UpdateScoreUI();
+    }
+
+    private void PlayCoinSound()
+    {
+        if (coinCollectSound != null)
+        {
+            coinAudioSource.PlayOneShot(coinCollectSound);
+            Debug.Log("✅ Coin sound played");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Coin collect sound clip not assigned!");
+        }
     }
 }
