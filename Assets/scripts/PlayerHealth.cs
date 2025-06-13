@@ -8,6 +8,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using StarterAssets;
+
 public class PlayerHealth : MonoBehaviour
 {
     private MonoBehaviour[] controlScripts;
@@ -19,36 +20,43 @@ public class PlayerHealth : MonoBehaviour
     public GameObject gameOverPanel;
     public float restartDelay = 3f;
 
+    public AudioClip damageSound;
+    public AudioClip deathSound;
+    [Range(0f, 1f)] public float volume = 1f;
+
+    private AudioSource audioSource;
     private bool isDead = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth; // Initialize health to maxHealth at the start
-        UpdateHealthUI(); // Update the UI to reflect the initial health
+        health = maxHealth;
+        UpdateHealthUI();
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
-
 
         if (damageFlashUI == null)
         {
             damageFlashUI = FindObjectOfType<DamageFlashUI>();
         }
 
-        // Find and store control scripts 
         controlScripts = new MonoBehaviour[]
         {
             GetComponent<FirstPersonController>(),
             GetComponent<StarterAssetsInputs>(),
             GetComponent<BasicRigidBodyPush>()
         };
+
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f;
+        audioSource.volume = volume;
     }
 
     public void TakeDamage(int amount)
     {
-        if (isDead) return; // Prevent taking damage if already dead
-        
+        if (isDead) return;
+
         health -= amount;
-        if (health < 0) health = 0; //Clamp health to 0 minimum
+        if (health < 0) health = 0;
 
         UpdateHealthUI();
 
@@ -57,7 +65,12 @@ public class PlayerHealth : MonoBehaviour
 
         if (health <= 0)
         {
+            PlayDeathSound();
             Die();
+        }
+        else
+        {
+            PlayDamageSound();
         }
     }
 
@@ -68,12 +81,11 @@ public class PlayerHealth : MonoBehaviour
             healthText.text = "Health: " + health.ToString();
         }
     }
-    
+
     void Die()
     {
-        isDead = true; // Set the player as dead
+        isDead = true;
 
-        // Disable all control scripts
         foreach (var script in controlScripts)
         {
             if (script != null)
@@ -92,5 +104,24 @@ public class PlayerHealth : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+    void PlayDamageSound()
+    {
+        if (damageSound != null)
+        {
+            audioSource.PlayOneShot(damageSound);
+            Debug.Log("🎧 Damage sound played");
+        }
+    }
+
+    void PlayDeathSound()
+    {
+        if (deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+            Debug.Log("💀 Death sound played");
+        }
+    }
 }
+
 

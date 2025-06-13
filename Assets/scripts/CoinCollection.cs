@@ -5,7 +5,6 @@
 * When the player collides with a coin, it increases the score and updates the UI.
 */
 
-
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -27,6 +26,8 @@ public class CoinCollection : MonoBehaviour
     [Range(0f, 1f)]
     public float volume = 1f;
 
+    public TextMeshProUGUI interactPrompt;  
+    private GameObject currentCoin = null;
     private AudioSource coinAudioSource;
 
     private void Start()
@@ -41,35 +42,76 @@ public class CoinCollection : MonoBehaviour
             messageText.gameObject.SetActive(false);
         }
 
-        // Forcefully add and configure a dedicated 2D AudioSource for coin sounds
+        if (interactPrompt != null)
+        {
+            interactPrompt.gameObject.SetActive(false);
+        }
+
         coinAudioSource = gameObject.AddComponent<AudioSource>();
         coinAudioSource.playOnAwake = false;
-        coinAudioSource.spatialBlend = 0f; // Force 2D
+        coinAudioSource.spatialBlend = 0f; 
         coinAudioSource.volume = volume;
+    }
+
+    private void Update()
+    {
+        if (currentCoin != null && Input.GetKeyDown(KeyCode.E))
+        {
+            CollectCoin(currentCoin);
+            currentCoin = null;
+
+            if (interactPrompt != null)
+            {
+                interactPrompt.gameObject.SetActive(false);
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Coin"))
         {
-            other.GetComponent<Collider>().enabled = false;
+            currentCoin = other.gameObject;
 
-            PlayCoinSound();
-
-            Coin += coinValue;
-            UpdateScoreUI();
-            Debug.Log(Coin);
-            Destroy(other.gameObject);
-
-            if (Coin >= scoreToUnlockKey && keyObject != null && !keySpawned)
+            if (interactPrompt != null)
             {
-                keyObject.SetActive(true);
-                keySpawned = true;
+                interactPrompt.gameObject.SetActive(true);
+            }
+        }
+    }
 
-                if (messageText != null)
-                {
-                    StartCoroutine(ShowMessage("The key has spawned in the center chamber!", messageDuration));
-                }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Coin") && other.gameObject == currentCoin)
+        {
+            currentCoin = null;
+
+            if (interactPrompt != null)
+            {
+                interactPrompt.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void CollectCoin(GameObject coin)
+    {
+        coin.GetComponent<Collider>().enabled = false;
+
+        PlayCoinSound();
+
+        Coin += coinValue;
+        UpdateScoreUI();
+        Debug.Log(Coin);
+        Destroy(coin);
+
+        if (Coin >= scoreToUnlockKey && keyObject != null && !keySpawned)
+        {
+            keyObject.SetActive(true);
+            keySpawned = true;
+
+            if (messageText != null)
+            {
+                StartCoroutine(ShowMessage("The key has spawned in the center chamber!", messageDuration));
             }
         }
     }
@@ -102,11 +144,6 @@ public class CoinCollection : MonoBehaviour
         if (coinCollectSound != null)
         {
             coinAudioSource.PlayOneShot(coinCollectSound);
-            Debug.Log("✅ Coin sound played");
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Coin collect sound clip not assigned!");
         }
     }
 }

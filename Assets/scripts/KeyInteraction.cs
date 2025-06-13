@@ -8,6 +8,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class KeyInteraction : MonoBehaviour
 {
@@ -17,8 +18,22 @@ public class KeyInteraction : MonoBehaviour
     public Image keyIconUI;
     public LockedDoorInteraction lockedDoor;
 
+    public AudioClip keyCollectSound;
+    [Range(0f, 1f)]
+    public float volume = 1f;
+
+    private AudioSource keyAudioSource;
+
     private bool isInRange = false;
     private bool isCollected = false;
+
+    void Start()
+    {
+        keyAudioSource = gameObject.AddComponent<AudioSource>();
+        keyAudioSource.playOnAwake = false;
+        keyAudioSource.spatialBlend = 0f;
+        keyAudioSource.volume = volume;
+    }
 
     void Update()
     {
@@ -47,9 +62,33 @@ public class KeyInteraction : MonoBehaviour
 
         if (lockedDoor != null)
         {
-            lockedDoor.GivePlayerKey(); 
+            lockedDoor.GivePlayerKey();
         }
 
-        gameObject.SetActive(false); 
+        PlayKeySound();
+
+        // Delay deactivation so sound can finish playing
+        StartCoroutine(DisableAfterSound());
+    }
+
+    private void PlayKeySound()
+    {
+        if (keyCollectSound != null)
+        {
+            keyAudioSource.PlayOneShot(keyCollectSound);
+            Debug.Log("✅ Key collect sound played");
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Key collect sound clip not assigned!");
+        }
+    }
+
+    private IEnumerator DisableAfterSound()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameObject.SetActive(false);
     }
 }
+
+
