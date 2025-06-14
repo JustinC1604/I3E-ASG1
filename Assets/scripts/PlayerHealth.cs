@@ -138,18 +138,6 @@ public class PlayerHealth : MonoBehaviour
     }
 
     /// <summary>
-    /// Detects collision with hazards like saws and applies damage accordingly.
-    /// </summary>
-    /// <param name="other">Collider that enters the trigger.</param>
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Saw"))
-        {
-            TakeDamage(20);
-        }
-    }
-
-    /// <summary>
     /// Handles player death by disabling controls, showing game over UI, and scheduling level restart.
     /// </summary>
     void Die()
