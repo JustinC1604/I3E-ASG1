@@ -11,24 +11,66 @@ using System.Collections;
 
 public class CoinCollection : MonoBehaviour
 {
+    /// <summary>
+    /// Current coin score of the player
+    /// </summary>
     public int Coin { get; private set; } = 0;
+
+    /// <summary>
+    /// Value of a single coin
+    /// </summary>
     public int coinValue = 10;
+
+    /// <summary>
+    /// UI Text to display the score
+    /// </summary>
     public TextMeshProUGUI coinText;
 
+    /// <summary>
+    /// Reference to the key object to spawn
+    /// </summary>
     public GameObject keyObject;
+
+    /// <summary>
+    /// Text UI element to display messages
+    /// </summary>
     public TextMeshProUGUI messageText;
+
+    /// <summary>
+    /// Duration for which messages are displayed
+    /// </summary>
     public float messageDuration = 3f;
+
     private bool keySpawned = false;
 
+    /// <summary>
+    /// Score required to unlock the key
+    /// </summary>
     public int scoreToUnlockKey = 50;
 
+    /// <summary>
+    /// Sound played when collecting a coin
+    /// </summary>
     public AudioClip coinCollectSound;
+
     [Range(0f, 1f)]
     public float volume = 1f;
 
-    public TextMeshProUGUI interactPrompt;  
+    /// <summary>
+    /// Prompt displayed when player is near a coin
+    /// </summary>
+    public TextMeshProUGUI interactPrompt;
+
     private GameObject currentCoin = null;
     private AudioSource coinAudioSource;
+
+    /// <summary>
+    /// UI elements for coin collection counters
+    /// </summary>
+    public TextMeshProUGUI coinsCollectedText;
+    public TextMeshProUGUI coinsLeftText;
+    public TextMeshProUGUI allCoinsCollectedText;
+    public int totalCoins = 5;
 
     private void Start()
     {
@@ -49,8 +91,10 @@ public class CoinCollection : MonoBehaviour
 
         coinAudioSource = gameObject.AddComponent<AudioSource>();
         coinAudioSource.playOnAwake = false;
-        coinAudioSource.spatialBlend = 0f; 
+        coinAudioSource.spatialBlend = 0f;
         coinAudioSource.volume = volume;
+
+        UpdateCoinCounterUI(); // Initialize counter display
     }
 
     private void Update()
@@ -93,6 +137,9 @@ public class CoinCollection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles logic when a coin is collected
+    /// </summary>
     private void CollectCoin(GameObject coin)
     {
         coin.GetComponent<Collider>().enabled = false;
@@ -101,7 +148,6 @@ public class CoinCollection : MonoBehaviour
 
         Coin += coinValue;
         UpdateScoreUI();
-        Debug.Log(Coin);
         Destroy(coin);
 
         if (Coin >= scoreToUnlockKey && keyObject != null && !keySpawned)
@@ -114,8 +160,13 @@ public class CoinCollection : MonoBehaviour
                 StartCoroutine(ShowMessage("The key has spawned in the center chamber!", messageDuration));
             }
         }
+
+        UpdateCoinCounterUI();
     }
 
+    /// <summary>
+    /// Updates the score UI
+    /// </summary>
     private void UpdateScoreUI()
     {
         if (coinText != null)
@@ -124,6 +175,9 @@ public class CoinCollection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Displays a temporary message on the screen
+    /// </summary>
     private IEnumerator ShowMessage(string message, float duration)
     {
         messageText.text = message;
@@ -133,12 +187,19 @@ public class CoinCollection : MonoBehaviour
         messageText.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Adds a value to the current score
+    /// </summary>
     public void AddScore(int value)
     {
         Coin += value;
         UpdateScoreUI();
+        UpdateCoinCounterUI();
     }
 
+    /// <summary>
+    /// Plays the coin collection sound
+    /// </summary>
     private void PlayCoinSound()
     {
         if (coinCollectSound != null)
@@ -146,4 +207,37 @@ public class CoinCollection : MonoBehaviour
             coinAudioSource.PlayOneShot(coinCollectSound);
         }
     }
+
+    /// <summary>
+    /// Updates coin-related UI elements like how many collected and how many left
+    /// </summary>
+    private void UpdateCoinCounterUI()
+    {
+        int coinsCollected = Coin / coinValue;
+        int coinsLeft = totalCoins - coinsCollected;
+
+        if (coinsCollectedText != null)
+            coinsCollectedText.text = "Coins collected: " + coinsCollected;
+
+        if (coinsLeftText != null)
+            coinsLeftText.text = "Coins left: " + Mathf.Max(coinsLeft, 0);
+
+        if (allCoinsCollectedText != null)
+            allCoinsCollectedText.gameObject.SetActive(coinsLeft <= 0);
+
+        if (coinsLeftText != null)
+            coinsLeftText.gameObject.SetActive(coinsLeft > 0);
+    }
+
+    /// <summary>
+    /// Adds bonus points to score
+    /// </summary>
+    public void AddBonusScore(int value)
+    {
+        Coin += value;
+        UpdateScoreUI();
+    }
 }
+
+
+

@@ -11,22 +11,75 @@ using TMPro;
 
 public class TreasureChestInteraction : MonoBehaviour
 {
+    /// <summary>
+    /// Maximum distance within which the player can interact with the chest.
+    /// </summary>
     public float interactionRange = 3f;
+
+    /// <summary>
+    /// Reference to the player's Transform.
+    /// </summary>
     public Transform player;
+
+    /// <summary>
+    /// UI prompt to show when the player can interact.
+    /// </summary>
     public TextMeshProUGUI interactionPrompt;
+
+    /// <summary>
+    /// UI panel that shows the completion message after collecting the chest.
+    /// </summary>
     public GameObject completionMessage;
+
+    /// <summary>
+    /// Text element for the main completion message.
+    /// </summary>
     public TextMeshProUGUI completionMessageText;
-    public TextMeshProUGUI secondaryMessageText; // Optional secondary message
+
+    /// <summary>
+    /// Text element for a secondary completion message.
+    /// </summary>
+    public TextMeshProUGUI secondaryMessageText;
+
+    /// <summary>
+    /// Score value awarded for collecting this chest.
+    /// </summary>
     public int chestValue = 50;
 
+    /// <summary>
+    /// Sound played when the chest is collected.
+    /// </summary>
     public AudioClip victorySound;
-    [Range(0f, 1f)] public float volume = 1f;
 
+    /// <summary>
+    /// Volume for the audio source playing the victory sound.
+    /// </summary>
+    [Range(0f, 1f)]
+    public float volume = 1f;
+
+    /// <summary>
+    /// AudioSource component used to play sounds.
+    /// </summary>
     private AudioSource audioSource;
+
+    /// <summary>
+    /// Flag indicating whether the player is within interaction range.
+    /// </summary>
     private bool isInRange = false;
+
+    /// <summary>
+    /// Flag indicating whether the chest has been collected.
+    /// </summary>
     private bool isCollected = false;
+
+    /// <summary>
+    /// Reference to the CoinCollection script to update score.
+    /// </summary>
     private CoinCollection coinCollector;
 
+    /// <summary>
+    /// Initializes variables and references.
+    /// </summary>
     void Start()
     {
         interactionPrompt.gameObject.SetActive(false);
@@ -41,6 +94,9 @@ public class TreasureChestInteraction : MonoBehaviour
         audioSource.volume = volume;
     }
 
+    /// <summary>
+    /// Checks player distance and interaction input to collect the chest.
+    /// </summary>
     void Update()
     {
         if (isCollected) return;
@@ -56,6 +112,9 @@ public class TreasureChestInteraction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles chest collection: awards score, shows messages, plays sound, and disables chest.
+    /// </summary>
     void CollectChest()
     {
         isCollected = true;
@@ -63,7 +122,7 @@ public class TreasureChestInteraction : MonoBehaviour
 
         if (coinCollector != null)
         {
-            coinCollector.AddScore(chestValue);
+            coinCollector.AddBonusScore(chestValue);
         }
 
         if (completionMessage != null)
@@ -80,10 +139,14 @@ public class TreasureChestInteraction : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Disables the chest GameObject.
+    /// </summary>
     void DisableChest()
     {
         gameObject.SetActive(false);
     }
 }
+
 
 
