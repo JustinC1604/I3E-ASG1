@@ -45,9 +45,9 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
   - Lava bricks cause 15 damage per second.
   - Poison areas cause 10 damage per second.  
 - **Normal Doors:** Doors that are not locked require the player to step on a pressure plate in front of the door. Stepping on the pressure plate will trigger the door to open.
-- **Locked Door:** Require a key to open. Players need to find the key to unlock the door.
-- **Coins:** Collect coins scattered throughout the level to increase your score. Each coin increases score by 10.
--**Key**: When the player fulfils the requiremnt, the key will spawn and the player can collect it.
+- **Locked Door:** Requires a key to unlock. Players need to find the key to unlock the door.
+- **Coins:** Collect coins scattered throughout the level to increase player score. Each coin increases score by 10.
+- **Key**: When the player fulfils the requirement, the key will spawn and the player can collect it.
 - **Treasure Chest:** Collect a special treasure chest to gain bonus points and trigger game completion message.
 - **UI Prompts:** Messages appear when interacting with objects (E.g "This door is locked..." message appears when trying to open the locked door without the key).
 
@@ -81,6 +81,7 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 - Pillar texture was taken from [Polyhaven](https://polyhaven.com/a/plaster_brick_pattern).
 - Torch textures were taken from [3D Substance Share](https://substance3d.adobe.com/community-assets).
 - Treasure chest textures were done in Adobe Substance Painter using their built-in textures.
+- The rest of the models were built using Unity Probuilder.
 
 **Code References**
 - The open door animation and code in the DoorController script was taken from a YouTube channel called [SpeedTutor](https://youtu.be/tJiO4cvsHAo?si=IV-73wCqdp1Xl2rY).
@@ -91,12 +92,12 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 
 - **Locked Door:** The key to the unlock the door only spawns when the player score reaches 50. Therefore the player must collect all 5 coins in order for the key to spawn.
 - **Glass Bridge:** Step only on safe tiles to avoid falling into lava.
--***First row*** 1st, 3rd and 5th tile are safe.
-***Second row*** Only 3rd tile is safe.
-***Third row*** Only 2nd and 3rd tile are safe.
-***Fourth row*** Only 2nd anf 4th tile are safe.
-***Fifth row*** Only second tile is safe.
-***Ideal route*** 3, 3, 3, 2, 2
+- ***First row:*** 1st, 3rd and 5th tile are safe.
+- ***Second row:*** Only 3rd tile is safe.
+- ***Third row:*** Only 2nd and 3rd tile are safe.
+- ***Fourth row:*** Only 2nd anf 4th tile are safe.
+- ***Fifth row:*** Only second tile is safe.
+- ***Ideal route:*** 3, 3, 3, 2, 2
 - **Treasure Chest:** Collect all coins first to spawn the key, then unlock the door to access the chest.
 
 ---
