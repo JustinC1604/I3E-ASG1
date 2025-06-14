@@ -77,11 +77,11 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 - The rest of the audio were taken from [Mixkit.co](https://mixkit.co/).
 
 **Models and textures**
-- The pillars, torches and treasure chest models were done by me from my previous assignments.
+- The pillars, torches, goblet and treasure chest models were done by me from my previous assignments.
 - Pillar texture was taken from [Polyhaven](https://polyhaven.com/a/plaster_brick_pattern).
 - Torch textures were taken from [3D Substance Share](https://substance3d.adobe.com/community-assets).
-- Treasure chest textures were done in Adobe Substance Painter using their built-in textures.
-- The rest of the models were built using Unity Probuilder.
+- Treasure chest and goblet textures were done in Adobe Substance Painter using the built-in textures.
+- The rest of the models were built using Unity ProBuilder.
 
 **Code References**
 - The open door animation and code in the DoorController script was taken from a YouTube channel called [SpeedTutor](https://youtu.be/tJiO4cvsHAo?si=IV-73wCqdp1Xl2rY).
@@ -90,7 +90,7 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 
 ## Puzzle Solutions / Answers
 
-- **Locked Door:** The key to the unlock the door only spawns when the player score reaches 50. Therefore the player must collect all 5 coins in order for the key to spawn.
+- **Locked Door:** The key to unlock the door only spawns when the player score reaches 50. Therefore the player must collect all 5 coins in order for the key to spawn.
 - **Glass Bridge:** Step only on safe tiles to avoid falling into lava.
 - ***First row:*** 1st, 3rd and 5th tile are safe.
 - ***Second row:*** Only 3rd tile is safe.
