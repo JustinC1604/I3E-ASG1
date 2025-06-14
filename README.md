@@ -3,7 +3,7 @@ Git repository for I3E assignment 1
 
 ## Author
 Chia Jia Cong Justin  
-Date: June 2025
+Date: 14 June 2025
 
 ---
 
@@ -42,12 +42,12 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 - **Health System:** Player starts with 100 health points. Health decreases upon contact with hazards (e.g., spikes, lava, poison).
 - **Damage Sources:**  
   - Lava pool and spikes cause instant death.  
-  - Lava bricks cause 15 damage per second.
-  - Poison areas cause 10 damage per second.  
+  - Lava bricks deals 15 damage per second.
+  - Poison area deals 10 damage per second.  
 - **Normal Doors:** Doors that are not locked require the player to step on a pressure plate in front of the door. Stepping on the pressure plate will trigger the door to open.
 - **Locked Door:** Requires a key to unlock. Players need to find the key to unlock the door.
-- **Coins:** Collect coins scattered throughout the level to increase player score. Each coin increases score by 10.
-- **Key**: When the player fulfils the requirement, the key will spawn and the player can collect it.
+- **Coins:** Collect coins scattered throughout the level to increase player score. Each coin increases the player score by 10.
+- **Key**: When the player fulfils the requirement, the key will automatically spawn and the player can collect it.
 - **Treasure Chest:** Collect a special treasure chest to gain bonus points and trigger game completion message.
 - **UI Prompts:** Messages appear when interacting with objects (E.g "This door is locked..." message appears when trying to open the locked door without the key).
 
@@ -74,6 +74,7 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 - [Open locked door sound](https://freesound.org/people/Leady/sounds/12739/).
 - [Open door sound](https://freesound.org/people/pfranzen/sounds/262705/).
 - [Victory sound](https://freesound.org/people/mokasza/sounds/810330/).
+- [Background music](https://freesound.org/people/BloodPixelHero/sounds/696408/)
 - The rest of the audio were taken from [Mixkit.co](https://mixkit.co/).
 
 **Models and textures**
@@ -92,12 +93,12 @@ This is a Unity 3D game featuring a player navigating through hazards, collectin
 
 - **Locked Door:** The key to unlock the door only spawns when the player score reaches 50. Therefore the player must collect all 5 coins in order for the key to spawn.
 - **Glass Bridge:** Step only on safe tiles to avoid falling into lava.
-- ***First row:*** 1st, 3rd and 5th tile are safe.
-- ***Second row:*** Only 3rd tile is safe.
-- ***Third row:*** Only 2nd and 3rd tile are safe.
-- ***Fourth row:*** Only 2nd anf 4th tile are safe.
-- ***Fifth row:*** Only second tile is safe.
-- ***Ideal route:*** 3, 3, 3, 2, 2
+    - ***First row:*** 1st, 3rd and 5th tile are safe.
+    - ***Second row:*** Only 3rd tile is safe.
+    - ***Third row:*** Only 2nd and 3rd tile are safe.
+    - ***Fourth row:*** Only 2nd and 4th tile are safe.
+    - ***Fifth row:*** Only second tile is safe.
+    - ***Ideal route:*** 3, 3, 3, 2, 2
 - **Treasure Chest:** Collect all coins first to spawn the key, then unlock the door to access the chest.
 
 ---
